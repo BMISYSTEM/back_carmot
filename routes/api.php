@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\Authcontroller;
+use App\Http\Controllers\EstadoController;
 use App\Http\Controllers\ImagenesController;
 use App\Http\Controllers\MarcasController;
+use App\Http\Controllers\ModeloController;
+use App\Http\Controllers\VehiculoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,6 +27,22 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('/create',[Authcontroller::class,'create']);
     Route::post('/logout',[Authcontroller::class,'logout']);
     Route::get('/permisos',[Authcontroller::class,'permisos']);
+
+    //marcas 
+    Route::post('/marca',[MarcasController::class,'create']);
+    Route::get('/index',[MarcasController::class,'index']);
+
+    //modelos
+    Route::post('/modelo',[ModeloController::class,'create']);
+    Route::get('/modelo',[ModeloController::class,'index']);
+
+    //estados
+    Route::post('/estados',[EstadoController::class,'create']);
+    Route::get('/estados',[EstadoController::class,'index']);
+
+    Route::post('/vehiculos',[VehiculoController::class,'create']);
+    Route::get('/vehiculos',[VehiculoController::class,'index']);
+
 });
 
 Route::post('/login',[Authcontroller::class,'login']);

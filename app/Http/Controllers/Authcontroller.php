@@ -34,7 +34,6 @@ class Authcontroller extends Controller
                 'token' => $user->createToken('token')->plainTextToken,
                 'user' => $user,
                 'permisos' => $permisos,
-                'imagen' =>$paht
 
              ];
             
