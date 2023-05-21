@@ -89,4 +89,9 @@ class VehiculoController extends Controller
         // return $_FILES['foto1'];
 
     }
+
+    public function index()
+    {
+        return response()->json(vehiculo::all());
+    }
 }
