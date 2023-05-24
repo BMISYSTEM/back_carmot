@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Vehiculos;
+use App\Http\Resources\VehiculosResource;
 use App\Models\vehiculo;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules\Exists;
+use Mockery\Undefined;
+use UnderflowException;
 
 class VehiculoController extends Controller
 {
@@ -17,7 +21,7 @@ class VehiculoController extends Controller
         $foto4 ='';
         $peritaje ='';
         if($_FILES){
-            if ($_FILES['foto1']) {
+            if (isset($_FILES['foto1'])) {
                 $foto1 =$_FILES['foto1']['name']['archivo'];
                 // $ruta = $_SERVER['DOCUMENT_ROOT']."";
                 $ruta = $_SERVER['DOCUMENT_ROOT']."/storage/vehiculos/";
@@ -27,7 +31,7 @@ class VehiculoController extends Controller
                 $link = asset('/storage/'.$foto1);
                 // $archivotmp->store();
             }
-            if ($_FILES['foto2']) {
+            if (isset($_FILES['foto2']) ) {
                 $foto2 =$_FILES['foto2']['name']['archivo'];
                 // $ruta = $_SERVER['DOCUMENT_ROOT']."";
                 $ruta = $_SERVER['DOCUMENT_ROOT']."/storage/vehiculos/";
@@ -37,7 +41,7 @@ class VehiculoController extends Controller
                 $link = asset('/storage/'.$foto1);
                 // $archivotmp->store();
             }
-            if ($_FILES['foto3']) {
+            if (isset($_FILES['foto3'])) {
                 $foto3 =$_FILES['foto3']['name']['archivo'];
                 // $ruta = $_SERVER['DOCUMENT_ROOT']."";
                 $ruta = $_SERVER['DOCUMENT_ROOT']."/storage/vehiculos/";
@@ -47,7 +51,7 @@ class VehiculoController extends Controller
                 $link = asset('/storage/'.$foto3);
                 // $archivotmp->store();
             }
-            if ($_FILES['foto4']) {
+            if (isset($_FILES['foto4'])) {
                 $foto4 =$_FILES['foto4']['name']['archivo'];
                 // $ruta = $_SERVER['DOCUMENT_ROOT']."";
                 $ruta = $_SERVER['DOCUMENT_ROOT']."/storage/vehiculos/";
@@ -57,7 +61,7 @@ class VehiculoController extends Controller
                 $link = asset('/storage/'.$foto4);
                 // $archivotmp->store();
             }
-            if ($_FILES['peritaje']) {
+            if (isset($_FILES['peritaje'])) {
                 $peritaje =$_FILES['peritaje']['name']['archivo'];
                 // $ruta = $_SERVER['DOCUMENT_ROOT']."";
                 $ruta = $_SERVER['DOCUMENT_ROOT']."/storage/peritaje/";
@@ -86,12 +90,11 @@ class VehiculoController extends Controller
         );
 
         return ['mensaje'=>'Creado correctamente'];
-        // return $_FILES['foto1'];
 
     }
 
     public function index()
     {
-        return response()->json(vehiculo::all());
+        return new VehiculosResource(vehiculo::with('marcas')->with('modelos')->with('estados')->get());
     }
 }

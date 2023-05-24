@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Authcontroller;
+use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\EstadoController;
 use App\Http\Controllers\ImagenesController;
 use App\Http\Controllers\MarcasController;
@@ -39,11 +40,18 @@ Route::middleware('auth:sanctum')->group(function(){
     //estados
     Route::post('/estados',[EstadoController::class,'create']);
     Route::get('/estados',[EstadoController::class,'index']);
-
+    //creacion de vehiculos con sus fotos
     Route::post('/vehiculos',[VehiculoController::class,'create']);
     Route::get('/vehiculos',[VehiculoController::class,'index']);
-
+    //creacion de clientes
+    Route::post('/clientes',[ClienteController::class,'create']);
+    Route::get('/clientes',[ClienteController::class,'index']);
+    //todos los usuarios\
+    Route::get('/usuarios',[Authcontroller::class,'index']);
+    Route::get('/usuarios/permisos',[Authcontroller::class,'users_permisos']);
 });
+
+
 
 Route::post('/login',[Authcontroller::class,'login']);
 Route::get('/force',[Authcontroller::class,'force']);

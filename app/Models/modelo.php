@@ -11,4 +11,9 @@ class modelo extends Model
     protected $fillable=[
         'year'
     ];
+
+    public function vehiculos()
+    {
+        return $this->hasMany(vehiculo::class);
+    }
 }

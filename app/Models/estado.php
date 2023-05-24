@@ -11,4 +11,5 @@ class estado extends Model
     protected $fillable = [
         'estado'
     ];
+    
 }

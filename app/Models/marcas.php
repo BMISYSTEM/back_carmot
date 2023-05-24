@@ -11,4 +11,12 @@ class marcas extends Model
     protected $fillable=[
         'nombre'
     ];
+
+    public function vehiculos()
+    {
+        return $this->hasMany(vehiculo::class);
+    }
+
+    
+
 }

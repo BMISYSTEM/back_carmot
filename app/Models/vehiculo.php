@@ -23,4 +23,20 @@ class vehiculo extends Model
         'peritaje',
 
     ];
+
+
+    public function marcas()
+    {
+        return $this->belongsTo(marcas::class,'marcas');
+    }
+
+    public function modelos()
+    {
+        return $this->belongsTo(modelo::class,'modelos');
+    }
+    
+    public function estados()
+    {
+        return $this->belongsTo(estado::class,'estados');
+    }
 }

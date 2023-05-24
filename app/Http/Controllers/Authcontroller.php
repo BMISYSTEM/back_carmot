@@ -3,16 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Permisos;
 use App\Http\Requests\login;
 use App\Http\Requests\users;
-use App\Models\Permisos;
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\Return_;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
-use PhpParser\Node\Stmt\Return_;
 
 use function PHPUnit\Framework\isNull;
+use Illuminate\Support\Facades\Storage;
 
 class Authcontroller extends Controller
 {
@@ -125,5 +126,30 @@ class Authcontroller extends Controller
          //creando el token para utenticar
          $user->createToken('token')->plainTextToken;
          return response()->json(['usuarios'=>User::all()]);
+    }
+
+    public function index()
+    {
+        $vista = DB::select(
+        'select u.id,u.name,u.apellido,u.email,u.cedula,u.created_at as fecha_inicio,count(c.id) as clientes,
+        count(
+        case
+        when c.estados = 7 then 1 end) as cerrados from users u 
+        inner join clientes c on c.users_id = u.id
+        inner join estados e on c.estados = e.id
+        GROUP by u.name,u.email,u.cedula,u.created_at');
+        return response()->json($vista);
+    }
+    public function users_permisos()
+    {
+        $vista = DB::select(
+        'select 
+        u.name,u.apellido,u.cedula,u.email,u.img, p.dashboard,
+        u.created_at,u.rol,
+        p.administrador, p.usuarios, p.recepcion, p.ajustes, 
+        p.campanas, p.contabilidad, p.transferencias, p.proveedor
+        from users u
+        inner join permisos p on p.user_id = u.id');
+        return response()->json($vista);
     }
 }
