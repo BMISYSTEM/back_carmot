@@ -144,12 +144,49 @@ class Authcontroller extends Controller
     {
         $vista = DB::select(
         'select 
-        u.name,u.apellido,u.cedula,u.email,u.img, p.dashboard,
+        u.id,u.activo,u.name,u.apellido,u.cedula,u.email,u.img, p.dashboard,
         u.created_at,u.rol,
         p.administrador, p.usuarios, p.recepcion, p.ajustes, 
         p.campanas, p.contabilidad, p.transferencias, p.proveedor
         from users u
         inner join permisos p on p.user_id = u.id');
         return response()->json($vista);
+    }
+    //actualiza los permisos de los usuarios
+    public function updatePermisos(Request $request)
+    {
+        $permisos = Permisos::where('user_id',$request['id'])->get();
+        $permisos->toQuery()->update([
+            'dashboard' => $request['dashboard'],
+            'administrador' => $request['administrador'],
+            'recepcion' => $request['recepcion'],
+            'ajustes' => $request['ajustes'],
+            'campanas' => $request['campanas'],
+            'contabilidad' => $request['contabilidad'],
+            'transferencias' => $request['transferencias'],
+            'proveedor' => $request['proveedor'],
+           ]
+        );
+        return 'Actualizado...';
+    }
+    //bloquea a los usuarios
+    public function BloqueoUser(Request $request)
+    {
+        $permisos = User::where('id',$request['id'])->get();
+        $permisos->toQuery()->update([
+            'activo' => 0,
+           ]
+        );
+        return 'Actualizado...';
+    }
+    //activasion de usuarios
+    public function ActivaUser(Request $request)
+    {
+        $permisos = User::where('id',$request['id'])->get();
+        $permisos->toQuery()->update([
+            'activo' => 1,
+           ]
+        );
+        return 'Actualizado...';
     }
 }

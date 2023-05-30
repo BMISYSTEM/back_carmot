@@ -6,6 +6,7 @@ use App\Http\Controllers\EstadoController;
 use App\Http\Controllers\ImagenesController;
 use App\Http\Controllers\MarcasController;
 use App\Http\Controllers\ModeloController;
+use App\Http\Controllers\NotificacionController;
 use App\Http\Controllers\VehiculoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +26,11 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('/users', function (Request $request) {
         return $request->user();
     });
+    // notificaciones 
+    Route::get('/clientes/notificaciones',[NotificacionController::class,'index']);
+
+
+
     Route::post('/create',[Authcontroller::class,'create']);
     Route::post('/logout',[Authcontroller::class,'logout']);
     Route::get('/permisos',[Authcontroller::class,'permisos']);
@@ -46,9 +52,18 @@ Route::middleware('auth:sanctum')->group(function(){
     //creacion de clientes
     Route::post('/clientes',[ClienteController::class,'create']);
     Route::get('/clientes',[ClienteController::class,'index']);
+    Route::get('/clientes/pendientes',[ClienteController::class,'pendientes']);
+    Route::get('/clientes/aprobados',[ClienteController::class,'aprobados']);
+    Route::get('/clientes/vendidos',[ClienteController::class,'vendidos']);
+    Route::post('/clientes/documentos',[ClienteController::class,'descargasdoc']);
+    Route::post('/clientes/estados',[ClienteController::class,'updateEstados']);
+
     //todos los usuarios\
     Route::get('/usuarios',[Authcontroller::class,'index']);
     Route::get('/usuarios/permisos',[Authcontroller::class,'users_permisos']);
+    Route::post('/usuarios/update_permisos',[Authcontroller::class,'updatePermisos']);
+    Route::post('/usuarios/bloqueo',[Authcontroller::class,'BloqueoUser']);
+    Route::post('/usuarios/ativacion',[Authcontroller::class,'ActivaUser']);
 });
 
 
@@ -57,6 +72,11 @@ Route::post('/login',[Authcontroller::class,'login']);
 Route::get('/force',[Authcontroller::class,'force']);
 
 // Route::get('/imagenes',imgcontroller::class,'store');
-Route::get('/imagen',[ImagenesController::class,'store']);
+// Route::get('/imagen',[ImagenesController::class,'store']);
+
+//generar link
+Route::get('/link',[ImagenesController::class,'link']);
+
+
 
 
